@@ -1,1 +1,1 @@
-# texteditor
+# TEXT EDİTÖRÜ
