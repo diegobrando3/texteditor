@@ -42,12 +42,13 @@ python main.py
 2. Düzenlemelerinizi yapın.
 3. **F2** ile değişikliklerinizi geçici bir `.ea` dosyasına kaydedin (isteğe bağlı).
 4. **F3** ile değişiklikleri asıl dosyaya kalıcı olarak işleyin.
-5. **F5** ile işiniz bittiğinde
+5. **F4** ile silme seçeneklerini seçin.
+6. **F5** ile işiniz bittiğinde utgulamayı kapatın.
 ## Sil Seçenekleri
 
 **F4** tuşuna basıldığında iki seçenek sunulur:
 
-- **Dosya İçeriğini Sil** — Editördeki metni temizler, dosyaya dokunmaz.
+- **Dosya İçeriğini Sil** — Editördeki metni ve dosyanın içindeki yazıları siler.
 - **Dosyayı Sil** — Dosyayı diskten kalıcı olarak siler (onay ister).
 
 ## Geçici Dosyalar
