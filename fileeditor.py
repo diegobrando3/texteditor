@@ -1,22 +1,30 @@
 import os
 from tkinter import filedialog, messagebox
-def filesave():
+
+def filesave(text_widget):
     dosya=filedialog.asksaveasfilename(defaultextension="*.ea")
     if dosya:
-        with open(dosya, "w", encoding="utf-8")as save:
-            save.write
-def openfile():
+        with open(dosya, "w", encoding="utf-8") as save:
+            content = text_widget.get("1.0", "end-1c")
+            save.write(content)
+        messagebox.showinfo("Başarılı", f"Dosya kaydedildi: {dosya}")
+def openfile(text_widget):
     dosya=filedialog.askopenfilename(filetypes=[("EA dosyaları", "*.ea")])
-    if not os._exists(dosya):
-        os.path.join("AEditor", "hello.ea")
-    with open(dosya, "r", encoding="utf-8") as ac:
-        ac.read
-        cwd=os.getcwd()
-        print(cwd)
-        return cwd
-
+    if dosya and os.path.exists(dosya):
+        with open(dosya, "r", encoding="utf-8") as ac:
+            icerik = ac.read()
+            text_widget.delete("1.0", "end")
+            text_widget.insert("1.0", icerik)
+            os.chdir(os.path.dirname(dosya))
+            cwd=os.getcwd()
+            print(cwd)
+            return cwd
+    else:
+        messagebox.showerror("Hata", "Dosya bulunamadı")
+cwd=os.getcwd()
 def filedel():
-    if cwd:
+    if os.path.exists(cwd):
         dosya=os.remove(cwd)
+        print("Dosya silindi")
     else:
         print("Önce dosyayı açın")
