@@ -60,3 +60,7 @@ Geçici kayıt yapıldığında `temp_*.ea` uzantılı dosyalar çalışma dizin
 **README ASSISTED BY CLAUDE <3**
 
 **PROJECT ASSISTED BY COPILOT <3**
+
+**CODE FLOW SUGGESTED BY GEMINI <3**
+
+**GLORY TO MUSTAFA E-REPUBLIC**
