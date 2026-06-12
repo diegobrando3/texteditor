@@ -20,6 +20,18 @@ def openfile(text_widget):
     else:
         messagebox.showerror("Hata", "Dosya bulunamadı")
 
+
+def newfile(text_widget):
+    dosya = filedialog.asksaveasfilename(defaultextension="*.ea")
+    if dosya:
+        with open(dosya, "w", encoding="utf-8") as new_file:
+            new_file.write("")
+        text_widget.delete("1.0", "end")
+        messagebox.showinfo("Başarılı", f"Yeni dosya oluşturuldu: {dosya}")
+        return dosya
+    else:
+        messagebox.showwarning("Uyarı", "Yeni dosya oluşturulmadı")
+
 cwd = os.getcwd()
 
 def filedel():

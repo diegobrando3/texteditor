@@ -38,6 +38,16 @@ def update_line_numbers(event=None):
 def durum(message):
     status_label.config(text=message)
 
+def yeni_dosya_command():
+    global active_file, temp_file
+    dosya = fileeditor.newfile(text)
+    if dosya:
+        active_file = dosya
+        temp_file = None
+        durum(f"Yeni dosya oluşturuldu: {os.path.basename(active_file)}")
+    else:
+        durum("Yeni dosya oluşturulamadı")
+
 def ac_command():
     global active_file, temp_file
     dosya = fileeditor.openfile(text)
@@ -152,14 +162,16 @@ def sil_command():
 
 
 dugmecubugu = tk.Frame(root)
-ac = tk.Button(dugmecubugu, text="Yeni Aç (F1)", command=ac_command)
-ekle = tk.Button(dugmecubugu, text="Ekle (F2)", command=ekle_command)
-commit = tk.Button(dugmecubugu, text="Değişiklikleri kaydet (F3)", command=commit_command)
-sil = tk.Button(dugmecubugu, text="Sil (F4)", command=sil_command)
-kapat = tk.Button(dugmecubugu, text="Kapat (F5)", command=root.quit)
+yeni_dosya = tk.Button(dugmecubugu, text="Yeni Dosya (F1)", command=yeni_dosya_command)
+ac = tk.Button(dugmecubugu, text="Yeni Aç (F2)", command=ac_command)
+ekle = tk.Button(dugmecubugu, text="Ekle (F3)", command=ekle_command)
+commit = tk.Button(dugmecubugu, text="Değişiklikleri kaydet (F4)", command=commit_command)
+sil = tk.Button(dugmecubugu, text="Sil (F5)", command=sil_command)
+kapat = tk.Button(dugmecubugu, text="Kapat (F6)", command=root.quit)
 
 text.pack(fill="both", expand=False)
 status_label.pack(side="bottom", fill="x")
+yeni_dosya.pack(side="left", padx=5, pady=5)
 ac.pack(side="left", padx=5, pady=5)
 ekle.pack(side="left", padx=5, pady=5)
 commit.pack(side="left", padx=5, pady=5)
@@ -173,10 +185,11 @@ update_line_numbers()
 text.bind("<KeyRelease>", update_line_numbers)
 
 # Keyboard kısayolları
-root.bind("<F1>", lambda event: ac_command())
-root.bind("<F2>", lambda event: ekle_command())
-root.bind("<F3>", lambda event: commit_command())
-root.bind("<F4>", lambda event: sil_command())
-root.bind("<F5>", lambda event: root.quit())
+root.bind("<F1>", lambda event: yeni_dosya_command())
+root.bind("<F2>", lambda event: ac_command())
+root.bind("<F3>", lambda event: ekle_command())
+root.bind("<F4>", lambda event: commit_command())
+root.bind("<F5>", lambda event: sil_command())
+root.bind("<F6>", lambda event: root.quit())
 
 root.mainloop()
