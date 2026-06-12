@@ -1,57 +1,182 @@
-import tkinter as tk
 import os
 import tempfile
+import tkinter as tk
+from tkinter import messagebox
 import fileeditor
-gecici=None
-aktif=None
 
-root= tk.Tk()
+root = tk.Tk()
 root.title("Enes Acar Text Editor")
-root.geometry("600x400")
-text = None  # Global text widget
+root.geometry("1920x1080")
 
-def ekle_command():
-    if text:
-        fileeditor.filesave(text)
+active_file = None
+temp_file = None
+
+# Text ve line numbers için frame
+text_frame = tk.Frame(root)
+text_frame.pack(fill="both", expand=True)
+
+# Line numbers widget
+line_numbers = tk.Text(text_frame, width=5, padx=5, bg="#E8E8E8", fg="#999999", font=("Arial", 12), state="disabled")
+line_numbers.pack(side="left", fill="y")
+
+text = tk.Text(text_frame, font=("Arial", 12))
+text.pack(side="left", fill="both", expand=True)
+
+status_label = tk.Label(root, text="Açık dosya yok", anchor="w")
+
+def update_line_numbers(event=None):
+    """kaçıncı satırdayızx"""
+    lines = text.get("1.0", "end-1c").split("\n")
+    line_count = len(lines)
+    line_numbers.config(state="normal")
+    line_numbers.delete("1.0", "end")
+    for i in range(1, line_count + 1):
+        line_numbers.insert("end", f"{i}\n")
+    
+    line_numbers.config(state="disabled")
+
+def durum(message):
+    status_label.config(text=message)
 
 def ac_command():
-    if text:
-        fileeditor.openfile(text)
+    global active_file, temp_file
+    dosya = fileeditor.openfile(text)
+    if dosya:
+        active_file = dosya
+        temp_file = None
+        durum(f"Açılan dosya: {os.path.basename(active_file)}")
+    else:
+        durum("Dosya açılmadı")
 
-ekle=tk.Button(root, text="Ekle", command=ekle_command)
-ac=tk.Button(root, text="Yeni Aç", command=ac_command)
-sil=tk.Button(root, text="Sil")
+def ekle_command():
+    global temp_file
+    if not active_file:
+        messagebox.showwarning("Uyarı", "Önce bir dosya açın.")
+        return
+    content = text.get("1.0", "end-1c")
+    if not content:
+        messagebox.showwarning("Uyarı", "Yazı alanı boş.")
+        return
+    if not temp_file or not os.path.exists(temp_file):
+        temp_handle = tempfile.NamedTemporaryFile(delete=False, suffix=".ea", prefix="temp_", dir=os.getcwd())
+        temp_file = temp_handle.name
+        temp_handle.close()
+    with open(temp_file, "w", encoding="utf-8") as temp:
+        temp.write(content)
 
-def editoru_ac():
+    durum(f"Geçici dosyaya yazıldı: {os.path.basename(temp_file)}")
+    messagebox.showinfo("Geçici Kaydedildi", f"Değişiklikler geçici dosyaya kaydedildi:\n{temp_file}")
 
-    # Ana menü butonlarını kaldır
-    ekle.pack_forget()
-    ac.pack_forget()
-    sil.pack_forget()
+def commit_command():
+    global temp_file
+    if not active_file:
+        messagebox.showwarning("Uyarı", "Önce bir dosya açın.")
+        return
+    content = text.get("1.0", "end-1c")
+    with open(active_file, "w", encoding="utf-8") as real_file:
+        real_file.write(content)
+    if temp_file and os.path.exists(temp_file):
+        os.remove(temp_file)
+        temp_file = None
+    durum(f"Commit yapıldı: {os.path.basename(active_file)}")
+    messagebox.showinfo("Commit Tamamlandı", f"Değişiklikler kalıcı olarak kaydedildi:{active_file}")
 
-    # Yazı alanı
-    global text
-    text = tk.Text(root, font=("Arial", 12))
-    text.pack(fill="both", expand=False)
+def sil_command():
+    global active_file, temp_file
+    if not active_file:
+        messagebox.showwarning("Uyarı", "Önce bir dosya açın.")
+        return
+    
+    # Seçim penceresini oluştur
+    sil_window = tk.Toplevel(root)
+    sil_window.title("Sil")
+    sil_window.geometry("400x150")
+    sil_window.resizable(False, False)
+    
+    # Başlık etiketi
+    baslik = tk.Label(sil_window, text="Ne yapmak istiyorsunuz?", font=("Arial", 12, "bold"))
+    baslik.pack(pady=10)
+    
+    # Tab gibi butonlar için frame
+    tab_frame = tk.Frame(sil_window)
+    tab_frame.pack(pady=10)
+    
+    def delete_content():
+        text.delete("1.0", "end")
+        durum("Dosya içeriği silindi")
+        sil_window.destroy()
+    
+    def delete_file():
+        global active_file, temp_file
+        if messagebox.askyesno("Onay", f"'{os.path.basename(active_file)}' dosyasını kalıcı olarak silmek istediğinizden emin misiniz?"):
+            try:
+                os.remove(active_file)
+                text.delete("1.0", "end")
+                active_file = None
+                temp_file = None
+                durum("Dosya silindi")
+                messagebox.showinfo("Başarılı", "Dosya kalıcı olarak silindi.")
+                sil_window.destroy()
+            except Exception as e:
+                messagebox.showerror("Hata", f"Dosya silinemedi: {e}")
+    
+    # Tab butonları
+    btn_icerik = tk.Button(
+        tab_frame, 
+        text="Dosya İçeriğini Sil", 
+        command=delete_content,
+        width=20,
+        bg="#FFE4E1",
+        activebackground="#FFB6C1"
+    )
+    btn_icerik.pack(side="left", padx=5)
+    
+    btn_dosya = tk.Button(
+        tab_frame, 
+        text="Dosyayı Sil", 
+        command=delete_file,
+        width=20,
+        bg="#FFE4E1",
+        activebackground="#FFB6C1"
+    )
+    btn_dosya.pack(side="left", padx=5)
+    
+    # İptal butonu
+    iptal_btn = tk.Button(
+        sil_window,
+        text="İptal",
+        command=sil_window.destroy,
+        width=20
+    )
+    iptal_btn.pack(pady=10)
 
-    # Alt araç çubuğu
-    toolbar = tk.Frame(root)
-    toolbar.pack(side="bottom", fill="x")
 
-    kaydet = tk.Button(toolbar, text="Kaydet", command=ekle_command)
-    kaydet.pack(side="left", padx=5, pady=5)
+dugmecubugu = tk.Frame(root)
+ac = tk.Button(dugmecubugu, text="Yeni Aç (F1)", command=ac_command)
+ekle = tk.Button(dugmecubugu, text="Ekle (F2)", command=ekle_command)
+commit = tk.Button(dugmecubugu, text="Değişiklikleri kaydet (F3)", command=commit_command)
+sil = tk.Button(dugmecubugu, text="Sil (F4)", command=sil_command)
+kapat = tk.Button(dugmecubugu, text="Kapat (F5)", command=root.quit)
 
-    sil_btn = tk.Button(toolbar, text="Sil")
-    sil_btn.pack(side="left", padx=5, pady=5)
+text.pack(fill="both", expand=False)
+status_label.pack(side="bottom", fill="x")
+ac.pack(side="left", padx=5, pady=5)
+ekle.pack(side="left", padx=5, pady=5)
+commit.pack(side="left", padx=5, pady=5)
+sil.pack(side="left", padx=5, pady=5)
+kapat.pack(side="left", padx=5, pady=5)
 
-    kapat = tk.Button(toolbar, text="Kapat")
-    kapat.pack(side="left", padx=5, pady=5)
+dugmecubugu.pack(side="bottom", fill="x")
 
+# Line numbers'ı güncelle
+update_line_numbers()
+text.bind("<KeyRelease>", update_line_numbers)
 
-# Editörü başlat
-editoru_ac()
-ekle.pack(pady=20)
-ac.pack(pady=20)
-sil.pack(pady=20)
+# Keyboard kısayolları
+root.bind("<F1>", lambda event: ac_command())
+root.bind("<F2>", lambda event: ekle_command())
+root.bind("<F3>", lambda event: commit_command())
+root.bind("<F4>", lambda event: sil_command())
+root.bind("<F5>", lambda event: root.quit())
 
 root.mainloop()

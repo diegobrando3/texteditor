@@ -1,7 +1,6 @@
+import program
 def main():
-    print("sj")
+    program
 
-
-
-if name==main:
+if __name__ == "__main__":
     main()
