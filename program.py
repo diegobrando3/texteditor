@@ -163,7 +163,7 @@ def sil_command():
 
 dugmecubugu = tk.Frame(root)
 yeni_dosya = tk.Button(dugmecubugu, text="Yeni Dosya (F1)", command=yeni_dosya_command)
-ac = tk.Button(dugmecubugu, text="Yeni Aç (F2)", command=ac_command)
+ac = tk.Button(dugmecubugu, text="Dosya Aç (F2)", command=ac_command)
 ekle = tk.Button(dugmecubugu, text="Ekle (F3)", command=ekle_command)
 commit = tk.Button(dugmecubugu, text="Değişiklikleri kaydet (F4)", command=commit_command)
 sil = tk.Button(dugmecubugu, text="Sil (F5)", command=sil_command)

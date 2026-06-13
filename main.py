@@ -1,6 +1,2 @@
 import program
-def main():
-    program
-
-if __name__ == "__main__":
-    main()
+print("Aslında main.py dosyasına gerek yok, program.py zaten otomatik olarak rootu başlatıyor. Ama bu dosyayı yapmak daha havalı gözükmesini sağlıyor🙂‍↕️")
