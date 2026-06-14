@@ -6,7 +6,9 @@ Tkinter tabanlı, sade ve kullanışlı bir masaüstü metin editörü.
 
 ## Özellikler
 
+- Özelleştirilebilirlik seçenekleri
 - Satır numaraları gösterimi
+- Kelime sayacı
 - Dosya açma, düzenleme ve kalıcı kaydetme
 - Geçici dosyaya kaydetme, temp (commit öncesi taslak)
 - Dosya içeriğini veya dosyanın kendisini silme
@@ -39,15 +41,16 @@ python main.py
 
 ## İş Akışı
 
-1. **F1** ile bir dosya açın.
+1. **F1** ile yeni bir dosya oluşturun (sonuna .ea ekleyin).
+1. **F2** ile bir dosya açın.
 2. Düzenlemelerinizi yapın.
-3. **F2** ile değişikliklerinizi geçici bir `.ea` dosyasına kaydedin (isteğe bağlı).
-4. **F3** ile değişiklikleri asıl dosyaya kalıcı olarak işleyin.
-5. **F4** ile silme seçeneklerini seçin.
-6. **F5** ile işiniz bittiğinde utgulamayı kapatın.
-## Sil Seçenekleri
+3. **F3** ile değişikliklerinizi geçici bir `.ea` dosyasına kaydedin (isteğe bağlı).
+4. **F4** ile değişiklikleri asıl dosyaya kalıcı olarak işleyin.
+5. **F5** ile silme seçeneklerini seçin.
+6. **F6** ile işiniz bittiğinde utgulamayı kapatın.
+## Silme Seçenekleri
 
-**F4** tuşuna basıldığında iki seçenek sunulur:
+**F5** tuşuna basıldığında iki seçenek sunulur:
 
 - **Dosya İçeriğini Sil** — Editördeki metni ve dosyanın içindeki yazıları siler.
 - **Dosyayı Sil** — Dosyayı diskten kalıcı olarak siler (onay ister).
@@ -56,9 +59,12 @@ python main.py
 
 Geçici kayıt yapıldığında `temp_*.ea` uzantılı dosyalar çalışma dizininde oluşturulur. Commit işlemi tamamlandığında bu dosyalar otomatik olarak silinir.
 
+## Sırada ekleyeceğim özellikler
+-Json dosyası ile stat tablosu???
+-Uygulama kapatırken autosave(commit) ve kaydedilmeyenleri kullanıcıya sorarak kaydetme
 
-
-**README ASSISTED BY CLAUDE <3**
+## ***KNOWN BUGS*** 🔨🔨
+Font size değişiklği yapılınca pencere boyutu değişiyor??
 
 **PROJECT ASSISTED BY COPILOT <3**
 
