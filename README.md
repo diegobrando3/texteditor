@@ -1,4 +1,5 @@
 # TEXT EDİTÖRÜ
+# 430 9ATP A Enes Acar
 # Enes Acar Text Editor
 
 Tkinter tabanlı, sade ve kullanışlı bir masaüstü metin editörü.
