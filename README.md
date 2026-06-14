@@ -33,11 +33,12 @@ python main.py
 
 | Kısayol | İşlev |
 |---------|-------|
-| `F1` | Dosya aç |
-| `F2` | Geçici dosyaya kaydet |
-| `F3` | Değişiklikleri kalıcı kaydet (commit) |
-| `F4` | Sil menüsünü aç |
-| `F5` | Uygulamayı kapat |
+| `F1` | Dosya oluştur |
+| `F2` | Dosya aç |
+| `F3` | Geçici dosyaya kaydet |
+| `F4` | Değişiklikleri kalıcı kaydet (commit) |
+| `F5` | Sil menüsünü aç |
+| `F6` | Uygulamayı kapat |
 
 ## İş Akışı
 
